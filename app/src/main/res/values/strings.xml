@@ -8,4 +8,10 @@
     <string name="humidity">Humidity 100%</string>
     <string name="pressure">Pressure 1023 hPa</string>
     <string name="forecast">Forecast</string>
+    <string name="forecast_fragment_title">Forecast</string>
+    <string name="forecast_current_temp">Temp: 72°</string>
+    <string name="forecast_high_temp">High: %d°</string>
+    <string name="forecast_low_temp">Low: %d°</string>
+    <string name="forecast_sunrise">Sunrise: %s</string>
+    <string name="forecast_sunset">Sunset: %s</string>
 </resources>
