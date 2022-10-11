@@ -47,7 +47,7 @@ private fun CurrentConditionsContent(
         Text(
             text = stringResource(id = string.city_name),
             style = TextStyle(
-                fontWeight = FontWeight(600),
+                fontWeight = FontWeight(400),
                 fontSize = 22.sp
             )
         )
@@ -58,13 +58,17 @@ private fun CurrentConditionsContent(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(id = string.current_temp),
+                    text = stringResource(id = string.current_temp, 72),
                     style = TextStyle(
                         fontWeight = FontWeight(400),
                         fontSize = 72.sp
                     )
                 )
-                Text(text = stringResource(id = string.feels_like_temp, 78))
+                Text(
+                    text = stringResource(id = string.feels_like_temp, 78),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight(500)
+                )
             }
             Spacer(modifier = Modifier.width(75.dp))
             Image(
@@ -81,6 +85,7 @@ private fun CurrentConditionsContent(
         ) {
             val textStyle = TextStyle(
                 fontSize = 22.sp,
+                fontWeight = FontWeight(450)
             )
             Text(text = stringResource(id = string.low_temp, 65), style = textStyle)
             Text(text = stringResource(id = string.high_temp, 80), style = textStyle)

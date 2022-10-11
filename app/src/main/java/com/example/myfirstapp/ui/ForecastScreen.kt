@@ -1,12 +1,12 @@
 package com.example.myfirstapp.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapp.R
 import com.example.myfirstapp.R.string
@@ -43,13 +44,19 @@ private val forecastData = listOf(
     DayForecast(1665344400, 1665324900, 1665362700, ForecastTemp(73f, 85f), 15f, 15)
 )
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ForecastScreen() {
-    LazyColumn {
-        items(items = forecastData) { item: DayForecast ->
-            ForecastRow(item = item)
+    Scaffold(
+        topBar = { AppBar(title = stringResource(id = string.forecast_title)) }
+    ) {
+        LazyColumn {
+            items(items = forecastData) { item: DayForecast ->
+                ForecastRow(item = item)
+            }
         }
     }
+
 }
 
 @Composable
@@ -59,38 +66,49 @@ private fun ForecastRow(item: DayForecast) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         val textStyle = TextStyle(
-            fontSize = 12.sp
+            fontSize = 13.sp
         )
-        Image(painter = painterResource(id = R.drawable.sun_icon), contentDescription = "")
-        Spacer(modifier = Modifier.weight(1f, fill = true))
+        Image(
+            painter = painterResource(id = R.drawable.sun_icon),
+            contentDescription = "Sunny",
+            modifier = Modifier.size(75.dp)
+        )
         Text(
             text = item.date.toMonthDay(),
             style = TextStyle(
-                fontSize = 16.sp
+                fontSize = 15.sp
             )
         )
-        Spacer(modifier = Modifier.weight(1f, fill = true))
+        Spacer(modifier = Modifier.padding(start = 24.dp))
         Column {
             Text(
-                text = stringResource(id = string.forecast_high_temp, item.temp.max.toInt()),
+                text = stringResource(id = string.forecast_current_temp, 72),
                 style = textStyle
             )
-
-            Text(
-                text = stringResource(id = string.forecast_low_temp, item.temp.min.toInt()),
-                style = textStyle
-            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Row {
+                Text(
+                    text = stringResource(id = string.forecast_high_temp, item.temp.max.toInt()),
+                    style = textStyle
+                )
+                Spacer(modifier = Modifier.width(14.dp))
+                Text(
+                    text = stringResource(id = string.forecast_low_temp, item.temp.min.toInt()),
+                    style = textStyle
+                )
+            }
         }
-        Spacer(modifier = Modifier.weight(1f, fill = true))
+        Spacer(modifier = Modifier.width(24.dp))
         Column(
             horizontalAlignment = Alignment.End
         ) {
             Text(
-                text = stringResource(id = string.forecast_sunrise, item.sunrise.toHourMinute()),
+                text = stringResource(id = string.forecast_sunrise, item.sunrise.toHourMinute().lowercase()),
                 style = textStyle
             )
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(id = string.forecast_sunset, item.sunset.toHourMinute()),
+                text = stringResource(id = string.forecast_sunset, item.sunset.toHourMinute().lowercase()),
                 style = textStyle
             )
         }
@@ -101,6 +119,6 @@ private fun ForecastRow(item: DayForecast) {
     showSystemUi = true
 )
 @Composable
-private fun ForcastRowPreview() {
+private fun ForecastRowPreview() {
     ForecastRow(item = forecastData[0])
 }
