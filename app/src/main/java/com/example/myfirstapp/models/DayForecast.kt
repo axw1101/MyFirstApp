@@ -1,4 +1,4 @@
-package com.example.myfirstapp
+package com.example.myfirstapp.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -11,3 +11,9 @@ data class DayForecast(
     val temp: ForecastTemp,
     val pressure: Float,
     val humidity: Int) : Parcelable
+
+@Parcelize
+data class ForecastTemp(
+    val min: Float,
+    val max: Float) : Parcelable
+
