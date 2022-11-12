@@ -24,7 +24,7 @@
         android:layout_marginStart="35dp"
         android:paddingStart="20dp"
         android:paddingEnd="0dp"
-        android:text="@string/current_temp"
+        android:text="@string/temperature"
         android:textColor="@color/black"
         android:textSize="72sp"
         app:layout_constraintStart_toStartOf="parent"
