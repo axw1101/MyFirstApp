@@ -27,4 +27,3 @@ class CurrentConditionsViewModel @Inject constructor(private val api: OpenWeathe
         _currentConditions.trySend(currentConditions)
     }
 }
-

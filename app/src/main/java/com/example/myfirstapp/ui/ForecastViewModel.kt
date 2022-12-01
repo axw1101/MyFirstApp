@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ForecastViewModel @Inject constructor(private val api: OpenWeatherMapApi): ViewModel() {
     private val _forecast = Channel<Forecast>()
-
+    
     val forecast: Flow<Forecast> = _forecast.receiveAsFlow()
 
     fun fetchData() = runBlocking {
@@ -26,5 +26,4 @@ class ForecastViewModel @Inject constructor(private val api: OpenWeatherMapApi):
         val forecast = api.getForecast(latitudeLongitude.latitude, latitudeLongitude.longitude)
         _forecast.trySend(forecast)
     }
-
 }

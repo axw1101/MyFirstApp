@@ -33,7 +33,7 @@ fun CurrentConditions(
     onForecastButtonClick: () -> Unit
 ) {
     val state by viewModel.currentConditions.collectAsState(initial = null)
-
+    
     if (latitudeLongitude != null) {
         LaunchedEffect(Unit) {
             viewModel.fetchCurrentLocationData(latitudeLongitude)
