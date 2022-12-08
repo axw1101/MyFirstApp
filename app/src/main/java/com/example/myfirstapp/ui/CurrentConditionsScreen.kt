@@ -1,7 +1,6 @@
 package com.example.myfirstapp.ui
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
@@ -12,8 +11,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -21,32 +18,37 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.LifecycleOwner
 import coil.compose.AsyncImage
-import com.example.myfirstapp.R
 import com.example.myfirstapp.R.string
 import com.example.myfirstapp.models.CurrentConditions
+import com.example.myfirstapp.models.LatitudeLongitude
 import kotlin.math.roundToInt
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun CurrentConditions(
+    latitudeLongitude: LatitudeLongitude?,
     viewModel: CurrentConditionsViewModel = hiltViewModel(),
+    onGetWeatherForMyLocationClick: () -> Unit,
     onForecastButtonClick: () -> Unit
 ) {
     val state by viewModel.currentConditions.collectAsState(initial = null)
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchData()
+    if (latitudeLongitude != null) {
+        LaunchedEffect(Unit) {
+            viewModel.fetchCurrentLocationData(latitudeLongitude)
+        }
+    } else {
+        LaunchedEffect(Unit) {
+            viewModel.fetchData()
+        }
     }
 
     Scaffold(
         topBar = { AppBar(title = stringResource(id = string.app_name)) }
     ) {
         state?.let {
-            CurrentConditionsContent(it) {
-                onForecastButtonClick()
-            }
+            CurrentConditionsContent(it, onGetWeatherForMyLocationClick, onForecastButtonClick)
         }
     }
 
@@ -55,6 +57,7 @@ fun CurrentConditions(
 @Composable
 private fun CurrentConditionsContent(
     currentConditions: CurrentConditions,
+    onGetWeatherForMyLocationClick: () -> Unit,
     onForecastButtonClick: () -> Unit
 ) {
     Column(
@@ -64,7 +67,7 @@ private fun CurrentConditionsContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = stringResource(id = string.city_name),
+            text = currentConditions.cityName,
             style = TextStyle(
                 fontWeight = FontWeight(400),
                 fontSize = 22.sp
@@ -119,6 +122,10 @@ private fun CurrentConditionsContent(
                 .width(180.dp)) {
             Text(text = stringResource(id = string.forecast))
         }
+        Spacer(modifier = Modifier.height(24.dp))
+        Button(onClick = onGetWeatherForMyLocationClick) {
+            Text(text = stringResource(id = string.get_weather_for_my_location))
+        }
 
     }
 }
@@ -128,6 +135,5 @@ private fun CurrentConditionsContent(
 )
 @Composable
 fun CurrentConditionsPreview() {
-    CurrentConditions {}
 }
 
