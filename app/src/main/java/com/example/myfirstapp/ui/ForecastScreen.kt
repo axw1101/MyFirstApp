@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.myfirstapp.R.string
 import com.example.myfirstapp.models.ForecastData
+import com.example.myfirstapp.models.LatitudeLongitude
 import com.example.myfirstapp.toHourMinute
 import com.example.myfirstapp.toMonthDay
 import kotlin.math.roundToInt
@@ -30,12 +31,18 @@ import kotlin.math.roundToInt
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ForecastScreen(
+    latitudeLongitude: LatitudeLongitude?,
     viewModel: ForecastViewModel = hiltViewModel(),
 ) {
     val state by viewModel.forecast.collectAsState(initial = null)
-
-    LaunchedEffect(Unit) {
-        viewModel.fetchData()
+    if (latitudeLongitude != null) {
+        LaunchedEffect(Unit) {
+            viewModel.fetchCurrentLocationData(latitudeLongitude)
+        }
+    } else {
+        LaunchedEffect(Unit) {
+            viewModel.fetchData()
+        }
     }
 
     Scaffold(
